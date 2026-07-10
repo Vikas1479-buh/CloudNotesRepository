@@ -1,0 +1,192 @@
+{% extends "layouts/faculty_base.html" %}
+
+{% block title %}My Notes{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }} alert-dismissible fade show">
+    {{ message }}
+    <button class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2>My Notes</h2>
+
+    <a href="/faculty/upload-note" class="btn btn-success">
+        <i class="fa-solid fa-upload"></i>
+        Upload Note
+    </a>
+
+</div>
+
+<form method="GET" action="/faculty/my-notes">
+
+<div class="row mb-3">
+
+<div class="col-md-4">
+
+<input
+type="text"
+name="search"
+class="form-control"
+placeholder="Search Title"
+value="{{ search }}">
+
+</div>
+
+<div class="col-md-3">
+
+<select
+name="semester"
+class="form-select">
+
+<option value="">All Semesters</option>
+
+{% for i in range(1,9) %}
+
+<option
+value="{{ i }}"
+{% if selected_semester|string==i|string %}selected{% endif %}>
+
+Semester {{ i }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-2">
+
+<button class="btn btn-success w-100">
+
+Search
+
+</button>
+
+</div>
+
+<div class="col-md-3">
+
+<a
+href="/faculty/my-notes"
+class="btn btn-secondary w-100">
+
+Reset
+
+</a>
+
+</div>
+
+</div>
+
+</form>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-success">
+
+<tr>
+
+<th>Title</th>
+<th>Subject</th>
+<th>Semester</th>
+<th>Status</th>
+<th>Downloads</th>
+<th width="140">Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for note in notes %}
+
+<tr>
+
+<td>{{ note.title }}</td>
+
+<td>{{ note.subject.name }}</td>
+
+<td>
+
+<span class="badge bg-primary">
+
+Semester {{ note.subject.semester }}
+
+</span>
+
+</td>
+
+<td>
+
+<span class="badge bg-warning">
+
+{{ note.approval_status.value }}
+
+</span>
+
+</td>
+
+<td>{{ note.download_count }}</td>
+
+<td>
+
+<a
+href="/faculty/edit-note/{{ note.id }}"
+class="btn btn-warning btn-sm">
+
+<i class="fa-solid fa-pen"></i>
+
+</a>
+
+<a
+href="/faculty/delete-note/{{ note.id }}"
+class="btn btn-danger btn-sm"
+onclick="return confirm('Delete this note?')">
+
+<i class="fa-solid fa-trash"></i>
+
+</a>
+
+</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="6" class="text-center">
+
+No Notes Found
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+{% endblock %}

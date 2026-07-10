@@ -1,0 +1,256 @@
+{% extends "layouts/student_base.html" %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<div class="row mb-4">
+
+<div class="col-md-12">
+
+<h2 class="fw-bold">
+
+<i class="fa-solid fa-book-open"></i>
+
+Browse Notes
+
+</h2>
+
+<p class="text-muted">
+
+Welcome {{ current_user.full_name }}
+
+</p>
+
+</div>
+
+</div>
+
+<div class="row mb-4">
+
+<div class="col-md-4">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h3>{{ notes|length }}</h3>
+
+<p>Total Notes</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h3>{{ subjects|length }}</h3>
+
+<p>Total Subjects</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h3>{{ bookmarked_notes|length }}</h3>
+
+<p>Bookmarks</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<form method="GET">
+
+<div class="row mb-4">
+
+<div class="col-md-3">
+
+<select
+name="semester"
+class="form-select">
+
+<option value="">All Semesters</option>
+
+{% for i in range(1,9) %}
+
+<option value="{{ i }}"
+{% if selected_semester|string==i|string %}selected{% endif %}>
+
+Semester {{ i }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-4">
+
+<select
+name="subject"
+class="form-select">
+
+<option value="">All Subjects</option>
+
+{% for s in subjects %}
+
+<option value="{{ s.id }}"
+{% if selected_subject|string==s.id|string %}selected{% endif %}>
+
+{{ s.code }} - {{ s.name }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-3">
+
+<input
+type="text"
+name="search"
+class="form-control"
+placeholder="Search Note"
+value="{{ search }}">
+
+</div>
+
+<div class="col-md-2">
+
+<button class="btn btn-primary w-100">
+
+Search
+
+</button>
+
+</div>
+
+</div>
+
+</form>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<table class="table table-hover table-bordered align-middle">
+
+<thead class="table-primary">
+
+<tr>
+
+<th>Title</th>
+<th>Subject</th>
+<th>Semester</th>
+<th>Type</th>
+<th>Downloads</th>
+<th>Date</th>
+<th width="220">Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for note in notes %}
+
+<tr>
+
+<td>{{ note.title }}</td>
+
+<td>{{ note.subject.name }}</td>
+
+<td>Semester {{ note.subject.semester }}</td>
+
+<td>{{ note.file_type }}</td>
+
+<td>{{ note.download_count }}</td>
+
+<td>{{ note.created_at.strftime("%d-%m-%Y") }}</td>
+
+<td>
+
+<a href="{{ note.file_url }}"
+target="_blank"
+class="btn btn-info btn-sm">
+
+<i class="fa-solid fa-eye"></i>
+
+</a>
+
+<a href="{{ url_for('student.download_note',id=note.id) }}"
+class="btn btn-success btn-sm">
+
+<i class="fa-solid fa-download"></i>
+
+</a>
+
+<a href="{{ url_for('student.bookmark_note',id=note.id) }}"
+class="btn btn-warning btn-sm">
+
+{% if note.id in bookmarked_notes %}
+
+<i class="fa-solid fa-bookmark"></i>
+
+{% else %}
+
+<i class="fa-regular fa-bookmark"></i>
+
+{% endif %}
+
+</a>
+
+</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="7" class="text-center">
+
+No Notes Available
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+{% endblock %}

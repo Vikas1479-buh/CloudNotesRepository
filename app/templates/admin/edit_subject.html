@@ -1,0 +1,128 @@
+{% extends "layouts/admin_base.html" %}
+
+{% block title %}
+Edit Subject
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show">
+                {{ message }}
+                <button class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="card shadow">
+
+    <div class="card-header bg-warning">
+        <h3>Edit Subject</h3>
+    </div>
+
+    <div class="card-body">
+
+        <form method="POST">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Subject Code
+                </label>
+
+                <input
+                    type="text"
+                    name="code"
+                    class="form-control"
+                    value="{{ subject.code }}"
+                    required>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Subject Name
+                </label>
+
+                <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    value="{{ subject.name }}"
+                    required>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Semester
+                </label>
+
+                <select
+                    name="semester"
+                    class="form-select"
+                    required>
+
+                    {% for i in range(1, 9) %}
+
+                    <option
+                        value="{{ i }}"
+                        {% if subject.semester == i %}selected{% endif %}>
+
+                        Semester {{ i }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Department
+                </label>
+
+                <select
+                    name="department"
+                    class="form-select"
+                    required>
+
+                    {% for department in departments %}
+
+                    <option
+                        value="{{ department.id }}"
+                        {% if subject.department_id == department.id %}selected{% endif %}>
+
+                        {{ department.name }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <button class="btn btn-success">
+                Update Subject
+            </button>
+
+            <a href="/admin/subjects" class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

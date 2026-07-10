@@ -1,0 +1,205 @@
+{% extends "layouts/admin_base.html" %}
+
+{% block title %}Subjects{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }} alert-dismissible fade show">
+    {{ message }}
+    <button class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2>Subjects</h2>
+
+    <a href="/admin/subjects/add" class="btn btn-primary">
+        <i class="fa-solid fa-plus"></i>
+        Add Subject
+    </a>
+
+</div>
+
+<form method="GET" action="/admin/subjects">
+
+<div class="row mb-3">
+
+<div class="col-md-3">
+
+<input
+type="text"
+name="search"
+class="form-control"
+placeholder="Search Subject"
+value="{{ search }}">
+
+</div>
+
+<div class="col-md-2">
+
+<select
+name="semester"
+class="form-select">
+
+<option value="">All Semesters</option>
+
+{% for i in range(1,9) %}
+
+<option
+value="{{ i }}"
+{% if selected_semester|string==i|string %}selected{% endif %}>
+
+Semester {{ i }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-3">
+
+<select
+name="department"
+class="form-select">
+
+<option value="">All Departments</option>
+
+{% for department in departments %}
+
+<option
+value="{{ department.id }}"
+{% if selected_department|string==department.id|string %}selected{% endif %}>
+
+{{ department.name }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-2">
+
+<button class="btn btn-success w-100">
+
+Search
+
+</button>
+
+</div>
+
+<div class="col-md-2">
+
+<a
+href="/admin/subjects"
+class="btn btn-secondary w-100">
+
+Reset
+
+</a>
+
+</div>
+
+</div>
+
+</form>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<table class="table table-hover table-bordered">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Code</th>
+<th>Subject</th>
+<th>Semester</th>
+<th>Department</th>
+<th width="140">Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for subject in subjects %}
+
+<tr>
+
+<td>{{ subject.code }}</td>
+
+<td>{{ subject.name }}</td>
+
+<td>
+
+<span class="badge bg-primary">
+
+Semester {{ subject.semester }}
+
+</span>
+
+</td>
+
+<td>{{ subject.department.name }}</td>
+
+<td>
+
+<a
+href="/admin/subjects/edit/{{ subject.id }}"
+class="btn btn-warning btn-sm">
+
+<i class="fa-solid fa-pen"></i>
+
+</a>
+
+<a
+href="/admin/subjects/delete/{{ subject.id }}"
+class="btn btn-danger btn-sm"
+onclick="return confirm('Delete this subject?')">
+
+<i class="fa-solid fa-trash"></i>
+
+</a>
+
+</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="5" class="text-center">
+
+No Subjects Found
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+{% endblock %}

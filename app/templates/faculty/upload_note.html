@@ -1,0 +1,181 @@
+{% extends "layouts/faculty_base.html" %}
+
+{% block title %}Upload Note{% endblock %}
+
+{% block content %}
+
+<div class="card shadow">
+
+    <div class="card-header bg-success text-white">
+
+        <h3>
+
+            <i class="fa-solid fa-upload"></i>
+
+            Upload Note
+
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+
+                    Semester
+
+                </label>
+
+                <select
+                    id="semester"
+                    class="form-select"
+                    required>
+
+                    <option value="">Select Semester</option>
+
+                    {% for i in range(1,9) %}
+                    <option value="{{ i }}">
+                        Semester {{ i }}
+                    </option>
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+
+                    Subject
+
+                </label>
+
+                <select
+                    id="subject"
+                    name="subject"
+                    class="form-select"
+                    required>
+
+                    <option value="">Select Semester First</option>
+
+                </select>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+
+                    Title
+
+                </label>
+
+                <input
+                    type="text"
+                    name="title"
+                    class="form-control"
+                    required>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+
+                    Description
+
+                </label>
+
+                <textarea
+                    name="description"
+                    rows="4"
+                    class="form-control"></textarea>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+
+                    Upload File
+
+                </label>
+
+                <input
+                    type="file"
+                    name="note_file"
+                    class="form-control"
+                    accept=".pdf,.ppt,.pptx"
+                    required>
+
+                <small class="text-muted">
+
+                    Allowed files: PDF, PPT, PPTX
+
+                </small>
+
+            </div>
+
+            <button
+                class="btn btn-success">
+
+                <i class="fa-solid fa-upload"></i>
+
+                Upload File
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+document.getElementById("semester").addEventListener("change", function () {
+
+    const semester = this.value;
+
+    const subject = document.getElementById("subject");
+
+    subject.innerHTML = "<option>Loading...</option>";
+
+    fetch("/faculty/subjects/" + semester)
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            subject.innerHTML = "";
+
+            if (data.length === 0) {
+
+                subject.innerHTML = "<option>No Subjects Found</option>";
+
+                return;
+
+            }
+
+            data.forEach(item => {
+
+                subject.innerHTML += `
+                    <option value="${item.id}">
+                        ${item.code} - ${item.name}
+                    </option>
+                `;
+
+            });
+
+        });
+
+});
+
+</script>
+
+{% endblock %}

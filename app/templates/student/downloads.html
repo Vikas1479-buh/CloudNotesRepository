@@ -1,0 +1,107 @@
+{% extends "layouts/student_base.html" %}
+
+{% block title %}Downloads{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">
+
+<i class="fa-solid fa-download text-success"></i>
+
+Download History
+
+</h2>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<table class="table table-bordered table-hover align-middle">
+
+<thead class="table-success">
+
+<tr>
+
+<th>Title</th>
+<th>Subject</th>
+<th>Downloaded On</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for download in downloads %}
+
+<tr>
+
+<td>
+
+{{ download.note.title }}
+
+</td>
+
+<td>
+
+{{ download.note.subject.name }}
+
+</td>
+
+<td>
+
+{{ download.created_at.strftime("%d-%m-%Y %I:%M %p") }}
+
+</td>
+
+<td>
+
+<a
+href="{{ download.note.file_url }}"
+target="_blank"
+class="btn btn-primary btn-sm">
+
+<i class="fa-solid fa-eye"></i>
+
+Preview
+
+</a>
+
+<a
+href="{{ url_for('student.download_note',id=download.note.id) }}"
+class="btn btn-success btn-sm">
+
+<i class="fa-solid fa-download"></i>
+
+Download Again
+
+</a>
+
+</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="4" class="text-center">
+
+No Download History
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+{% endblock %}

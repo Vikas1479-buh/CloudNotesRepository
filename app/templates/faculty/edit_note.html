@@ -1,0 +1,95 @@
+{% extends "layouts/faculty_base.html" %}
+
+{% block title %}Edit Note{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }} alert-dismissible fade show">
+    {{ message }}
+    <button class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="card shadow">
+
+    <div class="card-header bg-warning">
+        <h3>Edit Note</h3>
+    </div>
+
+    <div class="card-body">
+
+        <form method="POST">
+
+            <div class="mb-3">
+
+                <label class="form-label">Title</label>
+
+                <input
+                    type="text"
+                    name="title"
+                    class="form-control"
+                    value="{{ note.title }}"
+                    required>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">Description</label>
+
+                <textarea
+                    name="description"
+                    rows="4"
+                    class="form-control">{{ note.description }}</textarea>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">Subject</label>
+
+                <select
+                    name="subject"
+                    class="form-select"
+                    required>
+
+                    {% for subject in subjects %}
+
+                    <option
+                        value="{{ subject.id }}"
+                        {% if note.subject_id == subject.id %}selected{% endif %}>
+
+                        Semester {{ subject.semester }} - {{ subject.code }} - {{ subject.name }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <button class="btn btn-success">
+
+                Update Note
+
+            </button>
+
+            <a href="/faculty/my-notes" class="btn btn-secondary">
+
+                Cancel
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

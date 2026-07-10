@@ -1,0 +1,116 @@
+{% extends "layouts/admin_base.html" %}
+
+{% block title %}
+Departments
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+                </button>
+
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2>Departments</h2>
+
+    <a href="/admin/departments/add" class="btn btn-primary">
+
+        <i class="fa-solid fa-plus"></i>
+
+        Add Department
+
+    </a>
+
+</div>
+
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <table class="table table-hover table-bordered">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Department Name</th>
+                    <th>Created</th>
+                    <th width="140">Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for department in departments %}
+
+                <tr>
+
+                    <td>{{ department.id }}</td>
+
+                    <td>{{ department.name }}</td>
+
+                    <td>{{ department.created_at.strftime("%d-%m-%Y") }}</td>
+
+                    <td>
+
+                        <a
+                            href="/admin/departments/edit/{{ department.id }}"
+                            class="btn btn-warning btn-sm">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </a>
+
+                        <a
+                            href="/admin/departments/delete/{{ department.id }}"
+                            class="btn btn-danger btn-sm"
+                            onclick="return confirm('Are you sure you want to delete this department?')">
+
+                            <i class="fa-solid fa-trash"></i>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% else %}
+
+                <tr>
+
+                    <td colspan="4" class="text-center">
+
+                        No Departments Found
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

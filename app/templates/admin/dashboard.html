@@ -1,0 +1,101 @@
+{% extends "layouts/admin_base.html" %}
+
+{% block title %}
+Admin Dashboard
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="row">
+
+    <div class="col-md-3">
+        <div class="card text-bg-primary shadow mb-4">
+            <div class="card-body text-center">
+                <h5>Total Users</h5>
+                <h2>{{ total_users }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-bg-success shadow mb-4">
+            <div class="card-body text-center">
+                <h5>Departments</h5>
+                <h2>{{ total_departments }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-bg-warning shadow mb-4">
+            <div class="card-body text-center">
+                <h5>Subjects</h5>
+                <h2>{{ total_subjects }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-bg-danger shadow mb-4">
+            <div class="card-body text-center">
+                <h5>Notes</h5>
+                <h2>{{ total_notes }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Recent Notes</h5>
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-hover">
+
+            <thead>
+
+                <tr>
+                    <th>Title</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Downloads</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for note in recent_notes %}
+
+                <tr>
+                    <td>{{ note.title }}</td>
+                    <td>{{ note.subject.name }}</td>
+                    <td>{{ note.approval_status.value }}</td>
+                    <td>{{ note.download_count }}</td>
+                </tr>
+
+                {% else %}
+
+                <tr>
+                    <td colspan="4" class="text-center">
+                        No notes uploaded.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

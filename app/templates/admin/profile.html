@@ -1,0 +1,86 @@
+{% extends "layouts/admin_base.html" %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-primary text-white">
+
+                <h3>
+                    <i class="fa-solid fa-user"></i>
+                    My Profile
+                </h3>
+
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-bordered">
+
+                    <tr>
+                        <th width="220">Full Name</th>
+                        <td>{{ user.full_name }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Role</th>
+                        <td>{{ user.role.value }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Department</th>
+                        <td>{{ user.department.name }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            {% if user.is_active %}
+                                <span class="badge bg-success">Active</span>
+                            {% else %}
+                                <span class="badge bg-danger">Inactive</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Account Created</th>
+                        <td>{{ user.created_at.strftime("%d-%m-%Y %I:%M %p") }}</td>
+                    </tr>
+
+                </table>
+
+                <div class="mt-4">
+
+                    <a href="/admin/dashboard" class="btn btn-primary">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back to Dashboard
+                    </a>
+
+                    <button class="btn btn-secondary" disabled>
+                        <i class="fa-solid fa-key"></i>
+                        Change Password (Coming Soon)
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

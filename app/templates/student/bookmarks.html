@@ -1,0 +1,113 @@
+{% extends "layouts/student_base.html" %}
+
+{% block title %}Bookmarks{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">
+    <i class="fa-solid fa-bookmark text-warning"></i>
+    My Bookmarks
+</h2>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<table class="table table-bordered table-hover align-middle">
+
+<thead class="table-warning">
+
+<tr>
+
+<th>Title</th>
+<th>Subject</th>
+<th>Semester</th>
+<th>Type</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for bookmark in bookmarks %}
+
+<tr>
+
+<td>{{ bookmark.note.title }}</td>
+
+<td>{{ bookmark.note.subject.name }}</td>
+
+<td>
+
+Semester {{ bookmark.note.subject.semester }}
+
+</td>
+
+<td>
+
+{{ bookmark.note.file_type }}
+
+</td>
+
+<td>
+
+<a
+href="{{ bookmark.note.file_url }}"
+target="_blank"
+class="btn btn-info btn-sm">
+
+<i class="fa-solid fa-eye"></i>
+
+Preview
+
+</a>
+
+<a
+href="{{ url_for('student.download_note',id=bookmark.note.id) }}"
+class="btn btn-success btn-sm">
+
+<i class="fa-solid fa-download"></i>
+
+Download
+
+</a>
+
+<a
+href="{{ url_for('student.bookmark_note',id=bookmark.note.id) }}"
+class="btn btn-danger btn-sm">
+
+<i class="fa-solid fa-trash"></i>
+
+Remove
+
+</a>
+
+</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="5" class="text-center">
+
+No Bookmarks Found
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+{% endblock %}
